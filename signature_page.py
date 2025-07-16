@@ -4,6 +4,7 @@ from PIL import Image, ImageTk
 from config import settings
 import fitz
 
+
 class SignaturePage(tk.Frame):
     def __init__(self, parent, controller):
         super().__init__(parent, bg="#e6e6e6")
