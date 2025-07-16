@@ -1,40 +1,40 @@
-import fitz  # PyMuPDF
-from PIL import Image
-import os
+from io import BytesIO
+import fitz
 
 class PDFProcessor:
     def __init__(self):
-        self.files = []
-        self.pages = []
+        self.files = []  # store dicts with keys: name, type, stream, pages
 
-    def add_file(self, file_path):
-        ext = os.path.splitext(file_path)[-1].lower()
-        if ext == '.pdf':
-            self._load_pdf(file_path)
-        elif ext in ['.jpg', '.jpeg', '.png']:
-            self._load_image_as_pdf(file_path)
-
-    def _load_pdf(self, file_path):
-        doc = fitz.open(file_path)
-        for i in range(len(doc)):
-            self.pages.append({
-                'file': file_path,
-                'page_number': i
+    def add_file(self, file_path=None, stream=None, name=None, raw_image_path=None):
+        if raw_image_path:
+            self.files.append({
+                "name": raw_image_path,
+                "type": "image",
+                "raw_image_path": raw_image_path,
+                "stream": None,
+                "pages": 1
             })
-        self.files.append(file_path)
-
-    def _load_image_as_pdf(self, image_path):
-        image = Image.open(image_path).convert("RGB")
-        temp_pdf_path = image_path + ".temp.pdf"
-        image.save(temp_pdf_path, "PDF", resolution=100.0)
-        self._load_pdf(temp_pdf_path)
+            return
+        else:
+            if stream:
+                doc = fitz.open(stream=stream.getvalue(), filetype="pdf")
+            elif file_path:
+                doc = fitz.open(file_path)
+                stream = BytesIO()
+                doc.save(stream)
+                stream.seek(0)
+                name = file_path
+            else:
+                return
+            self.files.append({
+                "name": name,
+                "type": "pdf",
+                "stream": stream,
+                "pages": doc.page_count
+            })
 
     def get_total_pages(self):
-        return len(self.pages)
+        return sum(f["pages"] for f in self.files)
 
-    def get_pages(self):
-        return self.pages
-
-    def clear(self):
-        self.files.clear()
-        self.pages.clear()
+    def get_all_streams(self):
+        return [f["stream"] for f in self.files]
