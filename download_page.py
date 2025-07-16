@@ -170,6 +170,11 @@ class DownloadPage(tk.Frame):
                                         overlay=True
 
                                     )
+                                    if os.path.exists(temp_path):
+                                        try:
+                                            os.remove(temp_path)
+                                        except Exception as e:
+                                            print("Could not delete temp watermark image:", e)
 
 
                                 except Exception as e:
@@ -206,6 +211,12 @@ class DownloadPage(tk.Frame):
                             img.save(temp_path)
 
                             page.insert_image(fitz.Rect(x, y, x + w_img, y + h_img), filename=temp_path)
+
+                            if os.path.exists(temp_path):
+                                try:
+                                    os.remove(temp_path)
+                                except Exception as e:
+                                    print("Could not delete temp watermark image:", e)
 
                         except Exception as e:
                             print("Signature error:", e)
