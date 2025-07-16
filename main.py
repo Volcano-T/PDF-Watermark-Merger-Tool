@@ -1,6 +1,5 @@
 from tkinterdnd2 import TkinterDnD
 import tkinter as tk
-
 from import_page import ImportPage
 from settings_page import SettingsPage
 from watermark_page import WatermarkPage
@@ -39,7 +38,7 @@ class PDFToolApp:
             self.nav_buttons.append(btn)
 
         # ==== Main Content Area ====
-        self.container = tk.Frame(self.root, bg="white")
+        self.container = tk.Frame(self.root, bg="#c6f0f5")
         self.container.place(relx=0.18, rely=0, relwidth=0.82, relheight=1)
 
         for i, (_, FrameClass) in enumerate(self.steps):
@@ -70,6 +69,7 @@ class PDFToolApp:
     def previous_step(self):
         if self.current_step > 0:
             self.show_frame(self.current_step - 1)
+
 
 
 if __name__ == "__main__":
