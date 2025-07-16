@@ -7,7 +7,7 @@ settings = {
 
     "watermark": {
         "type": "Text",
-        "text": "Sample Watermark",
+        "text": "",
         "image_path": None,
         "font_size": 16,
         "opacity": 0.3,
