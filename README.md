@@ -30,5 +30,5 @@ A powerful Tkinter-based desktop application that allows you to:
 
 ### 1. Clone the repository
 ```bash
-git clone https://github.com/Volcano-T/PDF-Watermark-Merger-Tool
+git clone https://github.com/Volcano-T/PDF-Watermark-Merger-Tool.git
 cd pdf-watermark-merger
